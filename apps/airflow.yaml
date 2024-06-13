@@ -6,7 +6,7 @@ spec:
   project: default
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: airflow-test
+    namespace: airflow-test2
   syncPolicy:
     automated:
       prune: true
@@ -14,9 +14,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
   source:
-    repoURL: 'https://bitnami.github.io/bitnami23'
-    targetRevision: latest23
-    chart: airflow23
+    repoURL: 'https://bitnami.github.io/bitnami'
+    targetRevision: latest
+    chart: airflow
     helm:  
       values: |
         resources:
