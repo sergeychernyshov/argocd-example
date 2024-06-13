@@ -20,3 +20,7 @@ spec:
     chart: airflow
     helm:  
       values: |
+        resources:
+          limits:
+            cpu: 3
+            memory: 1024Mi
