@@ -1,14 +1,15 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: 
+metadata:
   creationTimestamp: null
   labels:
     app: nginx
   name: nginx
-spec: 
+spec:
   project: default
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: nginx-test
   replicas: 1
   selector:
@@ -17,12 +18,12 @@ spec:
   strategy: {}
   template:
     metadata:
-    creationTimestamp: null
+      creationTimestamp: null
       labels:
         app: nginx
     spec:
-        containers:
-      - image: nginx:1.24
-        name: nginx
-        resources: {}
+      containers:
+        - image: nginx:1.24
+          name: nginx
+          resources: {}
 status: {}
