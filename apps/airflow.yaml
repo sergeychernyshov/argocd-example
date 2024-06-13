@@ -14,8 +14,8 @@ spec:
     syncOptions:
       - CreateNamespace=true
   source:
-    repoURL: 'https://bitnami.github.io/bitnami222'
-    targetRevision: latest222
+    repoURL: 'https://bitnami.github.io/bitnami'
+    targetRevision: latest
     chart: airflow
     helm:  
       values: |
