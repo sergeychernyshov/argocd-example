@@ -15,7 +15,7 @@ spec:
       - CreateNamespace=true
 
   source:
-    repoURL: 'https://bitnami.github.io/bitnami'
+    repoURL: 'https://bitnami222.github.io/bitnami'
     targetRevision: latest
     chart: airflow
     helm:  
