@@ -5,7 +5,11 @@ metadata:
   labels:
     app: nginx
   name: nginx
-spec:
+spec: 
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: nginx-test
   replicas: 1
   selector:
     matchLabels:
