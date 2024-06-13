@@ -21,8 +21,8 @@ spec:
       values: |
         resources:
           limits:
-            cpu: 1
-            memory: 512Mi
+            cpu: 2
+            memory: 1024Mi
         auth:
           username: admin
           password: oracle    
@@ -39,6 +39,6 @@ spec:
           resources:
             requests:
               limits:
-                cpu: 1
-                memory: 512Mi
+                cpu: 2
+                memory: 2048Mi
   
