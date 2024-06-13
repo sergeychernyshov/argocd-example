@@ -7,6 +7,10 @@ metadata:
     app: nginx
   name: nginx
 spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nginx-test
   replicas: 1
   selector:
     matchLabels:
