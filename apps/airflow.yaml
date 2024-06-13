@@ -15,10 +15,8 @@ spec:
       - CreateNamespace=true
 
   source:
-    repoURL: 'https://airflow.apache.org'
-    targetRevision: 1.12.0
+    repoURL: 'https://bitnami.github.io/bitnami'
+    targetRevision: latest
     chart: airflow
-    helm:
-      releaseName: airflow-test
-      version: v3
+    helm:  
       values: |
