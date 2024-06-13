@@ -21,8 +21,11 @@ spec:
       values: |
         resources:
           limits:
-            cpu: 3
-            memory: 1024Mi
+            cpu: 1
+            memory: 512Mi
+        auth:
+          username: admin
+          password: oracle    
         postgresql:
           enabled: true
           auth:
@@ -36,6 +39,6 @@ spec:
           resources:
             requests:
               limits:
-                cpu: 2
-                memory: 2048Mi
+                cpu: 1
+                memory: 512Mi
   
