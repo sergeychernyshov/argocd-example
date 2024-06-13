@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 'airflow-test'
+  name: 'airflow'
 spec:
   project: default
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: airflow-test2
+    namespace: airflow
   syncPolicy:
     automated:
       prune: true
