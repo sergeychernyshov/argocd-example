@@ -17,7 +17,7 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
+    creationTimestamp: null
       labels:
         app: nginx
     spec:
