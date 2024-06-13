@@ -15,8 +15,29 @@ spec:
       - CreateNamespace=true
   source:
     repoURL: 'https://airflow.apache.org'
-    targetRevision: latest
     chart: airflow
     helm:  
       values: |
-
+        resources:
+          limits:
+            cpu: 2
+            memory: 1024Mi
+        auth:
+          username: admin
+          password: oracle    
+        postgresql:
+          enabled: true
+          auth:
+            enablePostgresUser: true
+            username: airflow
+            password: "oracle"
+            database: dbairflow
+            existingSecret: ""
+          architecture: standalone
+          primary:
+          resources:
+            requests:
+              limits:
+                cpu: 2
+                memory: 2048Mi
+  
