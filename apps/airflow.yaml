@@ -13,10 +13,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
   source:
-    repoURL: 'https://bitnami222.github.io/bitnami'
-    targetRevision: latest
+    repoURL: 'https://bitnami.github.io/bitnami222'
+    targetRevision: latest222
     chart: airflow
     helm:  
       values: |
