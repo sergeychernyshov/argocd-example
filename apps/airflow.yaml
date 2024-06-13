@@ -21,8 +21,8 @@ spec:
     syncOptions:
       - CreateNamespace=true
     source:
-      repoURL: https://ckotzbauer.github.io/helm-charts
-      chart: cadvisor
+      repoURL: https://bitnami.github.io/bitnami
+      chart: airflow
       targetRevision: 2.2.4
       helm:
         values: |
