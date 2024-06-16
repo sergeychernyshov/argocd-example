@@ -7,7 +7,7 @@ spec:
   project: default
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: postgresql
+    namespace: default
   syncPolicy:
     automated:
       prune: true
