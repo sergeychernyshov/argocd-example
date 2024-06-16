@@ -1,32 +1,53 @@
-global:
-  postgresql:
-    auth:
-      postgresPassword: "oracle"
-primary:
-  persistence:
-    enabled: false
-  initdb:
-    user: "postgres"
-    password: "oracle"
-    scripts:
-      init-database-dwh.sh: |-
-        #!/bin/bash     
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dwh'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE dwh;";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'dwh'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE dwh with password 'oracle';";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"dwh\" to dwh;"; 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"dwh\" WITH LOGIN;"; 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE dwh OWNER TO dwh;"; 
-      init-database-dwh-dew.sh: |-
-        #!/bin/bash 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dwh_dev'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE dwh_dev;";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'dwh_dev'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE dwh_dev with password 'oracle';";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"dwh_dev\" to dwh_dev;"; 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"dwh_dev\" WITH LOGIN;"; 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE dwh_dev OWNER TO dwh_dev;"; 
-      init-database-airflow.sh: |-
-        #!/bin/bash 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'airflow'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE airflow;";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'airflow'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE airflow with password 'oracle';";
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"airflow\" to airflow;";    
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"airflow\" WITH LOGIN;"; 
-        PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE airflow OWNER TO airflow;";  
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: dwh
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: postgresql
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    chart: bitnami/postgresql
+    helm:  
+      values: |
+        global:
+          postgresql:
+            auth:
+              postgresPassword: "oracle"
+        primary:
+          persistence:
+            enabled: false
+          initdb:
+            user: "postgres"
+            password: "oracle"
+            scripts:
+              init-database-dwh.sh: |-
+                #!/bin/bash     
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dwh'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE dwh;";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'dwh'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE dwh with password 'oracle';";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"dwh\" to dwh;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"dwh\" WITH LOGIN;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE dwh OWNER TO dwh;"; 
+              init-database-dwh-dew.sh: |-
+                #!/bin/bash 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dwh_dev'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE dwh_dev;";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'dwh_dev'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE dwh_dev with password 'oracle';";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"dwh_dev\" to dwh_dev;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"dwh_dev\" WITH LOGIN;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE dwh_dev OWNER TO dwh_dev;"; 
+              init-database-airflow.sh: |-
+                #!/bin/bash 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'airflow'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "CREATE DATABASE airflow;";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'airflow'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE airflow with password 'oracle';";
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"airflow\" to airflow;";    
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"airflow\" WITH LOGIN;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE airflow OWNER TO airflow;"; 
