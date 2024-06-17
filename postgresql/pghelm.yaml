@@ -25,7 +25,7 @@ spec:
         image:
           registry: docker.io
           repository: bitnami/postgresql
-          tag: 16.3.0-debian-12-r14        
+          tag: 16.3.0-debian-12-r14    
         primary:
           persistence:
             enabled: false
@@ -53,4 +53,13 @@ spec:
                 PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -tc "SELECT 1 FROM pg_roles WHERE rolname = 'airflow'" | grep -q 1 || PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "create ROLE airflow with password 'oracle';";
                 PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "GRANT ALL PRIVILEGES ON DATABASE \"airflow\" to airflow;";    
                 PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"airflow\" WITH LOGIN;"; 
-                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE airflow OWNER TO airflow;"; 
+                PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE airflow OWNER TO airflow;";  
+          persistence:
+            size: 2Gi
+            #mountPath: /dwh/postgresql  
+          resources:
+            requests:
+              cpu: 2
+              memory: 512Mi  
+        backup:
+          enabled: false
