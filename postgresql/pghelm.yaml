@@ -1,7 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: postgresql
+  namespace: argocd
 spec:
   project: default
   destination:
@@ -55,7 +56,7 @@ spec:
                 PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER ROLE \"airflow\" WITH LOGIN;"; 
                 PGPASSWORD="oracle" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 -c "ALTER DATABASE airflow OWNER TO airflow;";  
           persistence:
-            size: 2Gi
+            size: 1Gi
             #mountPath: /dwh/postgresql  
           resources:
             requests:
